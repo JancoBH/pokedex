@@ -1,3 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Default theme */
+    --color-primary: 239 68 68; /* #ef4444 | red-500 */
+    --color-primary-lighter: 248 113 113; /* #f87171 | red-400 */
+    --color-primary-darker: 220 38 38; /* #dc2626 | red-600 */
+    --color-secondary: 248 158 11; /* #f59e0b | amber-500 */
+    --color-secondary-lighter: 251 191 36; /* #fbbf24 | amber-400 */
+    --color-secondary-darker: 217 119 6; /* #d97706 | amber-600 */
+  }
+}
+
 html,
 body {
   padding: 0;
@@ -13,4 +29,24 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+/*Tailwind classes*/
+@layer components {
+  p, span {
+    @apply text-gray-500 dark:text-gray-300;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-darken dark:text-white
+  }
+
+  ::selection {
+    @apply bg-primary text-white;
+  }
+
+  .principal-container {
+    @apply container mx-auto max-w-6xl my-4 px-5 xl:px-0
+  }
+
 }

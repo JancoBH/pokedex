@@ -1,29 +1,43 @@
-# Redux Toolkit TypeScript Example
+# Pokédex - JancoBH
 
-This example shows how to integrate Next.js with [Redux Toolkit](https://redux-toolkit.js.org).
+## 🚀 Getting Started
 
-The **Redux Toolkit** is a standardized way to write Redux logic (create actions and reducers, setup the store with some default middlewares like redux devtools extension). This example demonstrates each of these features with Next.js
+Pokédex - Is an example app for Paramo Technologies challenge.
 
-## Deploy your own
+See **Installing** for steps to make it work in your local environment.
+## 💻 Live Demo
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+* Vercel: <a href="https://pokedex-jancobh.vercel.app/" target="_blank">https://pokedex-jancobh.vercel.app</a>
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-redux&project-name=with-redux&repository-name=with-redux)
 
-## How to use
+## 📋 Prerequisites
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+* <a href="https://nodejs.org/es/" target="_blank">Node JS 14.18+, 16+</a> - You need it to use npm
 
-```bash
-npx create-next-app --example with-redux with-redux-app
-```
+## 🔧 Installing
 
 ```bash
-yarn create next-app --example with-redux with-redux-app
+git clone https://github.com/JancoBH/pokedex.git
+cd pokedex
+yarn install or npm install
+run `next` or npm run dev.
 ```
 
-```bash
-pnpm create next-app --example with-redux with-redux-app
-```
+## 🛠️ Built With
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+* <a href="https://nextjs.org/" target="_blank">NextJS</a> 12.2.5
+* <a href="https://reactjs.org/" target="_blank">React</a> 18.2.0
+* <a href="https://redux-toolkit.js.org/" target="_blank">Redux Toolkit</a> 1.8.5
+* PokeApi: <a href="https://pokeapi.co/" target="_blank">https://pokeapi.co</a>
+
+
+## 📦 Deployment
+
+You can check <a href="https://vercel.com/#get-started" target="_blank">Vercel Website</a> to learn how to deploy this project.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+🧑‍💻 Developed by [JancoBH](https://github.com/JancoBH)
