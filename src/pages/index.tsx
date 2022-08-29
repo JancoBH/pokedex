@@ -2,7 +2,7 @@ import type {GetServerSideProps, NextPage} from 'next';
 import Head from 'next/head';
 import {PokemonCard} from '../components/cards/PokemonCard';
 import {Pagination} from '../components/pagination/Pagination';
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import { useRouter } from 'next/router';
 
 const lastPkm = 898;
@@ -10,23 +10,22 @@ const lastPkm = 898;
 // @ts-ignore
 const IndexPage: NextPage = ({pokemonList}) => {
 
-  const router = useRouter();
+  const { asPath, pathname, ...router } = useRouter();
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  useEffect(() => {
-
-    const limit = 16;
-    const offset = (currentPage - 1) * limit;
+  const setQueryParams = useCallback((page) => {
 
     router.push({
       pathname: '/',
       query: {
-        offset,
-        limit: offset === 896 ? 2 : limit
+        page
       }
     });
+  }, [router]);
 
-  } , [currentPage]);
+  useEffect(() => {
+    setCurrentPage(Number(router.query.page ?? 1));
+  }, [router.query]);
 
   return (
     <>
@@ -54,7 +53,7 @@ const IndexPage: NextPage = ({pokemonList}) => {
           currentPage={currentPage}
           totalCount={lastPkm}
           pageSize={16}
-          onPageChange={page => setCurrentPage(page)}
+          onPageChange={page => setQueryParams(page)}
         />
       </section>
     </>
@@ -63,10 +62,14 @@ const IndexPage: NextPage = ({pokemonList}) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
-  const { offset, limit } = context.query;
+  const { page } = context.query;
+
+  let limit = 16;
+
+  const offset = (Number(page ?? 1) - 1) * limit;
+  limit = offset === 896 ? 2 : limit;
 
   try {
-
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
     const pokePaginationData = await res.json();
 

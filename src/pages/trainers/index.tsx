@@ -1,9 +1,15 @@
-const Trainers = () => {
+import {Trainers} from '../../features/trainer/Trainer';
+import Head from 'next/head';
+
+const TrainersPage = () => {
   return (
-    <div>
-      <h1>Trainers</h1>
-    </div>
+    <>
+      <Head>
+        <title>Trainers - JancoBH</title>
+      </Head>
+      <Trainers />
+    </>
   );
 };
 
-export default Trainers;
+export default TrainersPage;

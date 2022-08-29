@@ -46,7 +46,10 @@ export const Pagination = ({onPageChange, totalCount, siblingCount = 1, currentP
 
         return (
           <li
-            className={`${defaultCss} hover:text-white hover:cursor-pointer hover:bg-primary ${pageNumber === currentPage ? 'bg-primary dark:bg-primary-dark text-white' : ''}`}
+            className={`
+              ${defaultCss} hover:text-white hover:cursor-pointer hover:bg-primary
+              ${pageNumber === currentPage ? 'bg-primary dark:bg-primary-dark text-white pointer-events-none' : ''}
+            `}
             key={pageNumber}
             onClick={() => onPageChange(pageNumber as number)}
           >

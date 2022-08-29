@@ -1,23 +1,15 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-
-import counterReducer from '../features/counter/counterSlice';
-import {pokeApi} from '../services/pokeapi';
-import {setupListeners} from '@reduxjs/toolkit/query';
+import {trainerSlice} from '../features/trainer/trainerSlice';
 
 export function makeStore() {
   return configureStore({
     reducer: {
-      counter: counterReducer,
-      [pokeApi.reducerPath]: pokeApi.reducer,
-    },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(pokeApi.middleware).concat(),
+      trainer: trainerSlice.reducer,
+    }
   });
 }
 
 const store = makeStore();
-
-setupListeners(store.dispatch);
 
 export type AppState = ReturnType<typeof store.getState>
 
