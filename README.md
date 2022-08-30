@@ -2,7 +2,7 @@
 
 ## 🚀 Getting Started
 
-Pokédex - Is an example app for Paramo Technologies challenge.
+Pokédex - Is an example app for Paramo Technologies challenge | inspired by <a href="https://zukan.pokemon.co.jp/" target="_blank">Official Japanese Pokédex</a>.
 
 See **Installing** for steps to make it work in your local environment.
 ## 💻 Live Demo

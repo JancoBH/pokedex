@@ -1,9 +1,11 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import {trainerSlice} from '../features/trainer/trainerSlice';
+import {pokemonSlice} from '../features/pokemon/pokemonSlice';
 
 export function makeStore() {
   return configureStore({
     reducer: {
+      pokemon: pokemonSlice.reducer,
       trainer: trainerSlice.reducer,
     }
   });

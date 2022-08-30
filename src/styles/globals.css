@@ -31,9 +31,24 @@ a {
   box-sizing: border-box;
 }
 
+/*routing bar*/
+#nprogress .bar {
+  background: #EF4444FF !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #EF4444FF, 0 0 5px #EF4444FF !important;
+}
+
+#nprogress .spinner-icon {
+  border-top-color: #EF4444FF;
+  border-left-color: #EF4444FF;
+}
+
 /*Tailwind classes*/
 @layer components {
-  p, span {
+
+  p, span, small {
     @apply text-gray-500 dark:text-gray-300;
   }
 
