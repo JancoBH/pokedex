@@ -36,14 +36,8 @@ export const Modal = ({isOpen, title, closeModal, children}) => {
                   as="div"
                   className="text-black dark:text-gray-50 text-3xl font-medium leading-6 flex items-center justify-between bg-gray-100 dark:bg-dark-theme p-5"
                 >
-                  <div className="flex items-center gap-2">
-                    <Image src={'/icon_search.svg'} alt={'Search'} title={'Search'} width={35} height={36} />
-
-                    {title}
-                  </div>
-
+                  {title}
                   <Image src={'/close.svg'} alt={'Search'} title={'Close'} width={20} height={20} className="hover:opacity-60 cursor-pointer dark:invert" onClick={closeModal} />
-
                 </Dialog.Title>
                 {
                   children

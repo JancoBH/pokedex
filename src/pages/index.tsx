@@ -7,8 +7,7 @@ import {Pokemon} from '../models';
 
 const lastPkm = 898;
 
-// @ts-ignore
-const IndexPage: NextPage = ({pokemonList}: Pokemon[]) => {
+const IndexPage: NextPage = ({pokemonList, totalPkmn}: {pokemonList: Pokemon[], totalPkmn: number}) => {
 
   const { asPath, pathname, ...router } = useRouter();
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -16,7 +15,7 @@ const IndexPage: NextPage = ({pokemonList}: Pokemon[]) => {
   const setQueryParams = useCallback((page) => {
     router.push({
       pathname: '/',
-      query: {page}
+      query: {...router.query, page}
     });
   }, [router]);
 
@@ -31,22 +30,30 @@ const IndexPage: NextPage = ({pokemonList}: Pokemon[]) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* Latest Pokémon section */}
-      <section className="principal-container pt-24 lg:pt-24">
+      {/* Pokédex Section */}
+      <section className="principal-container pt-24 lg:pt-24 min-h-[85vh]">
         <h2 className="text-2xl lg:text-3xl font-medium mb-8 text-center lg:text-left">Pokédex List</h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-center">
-          {
-            pokemonList.map( pkmn => (
-              <PokemonCard key={pkmn.id} pokemon={pkmn} />
-            ))
-          }
-        </div>
+        {
+          pokemonList.length > 0
+            ?
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-center">
+              {
+                pokemonList.map( pkmn => (
+                  <PokemonCard key={pkmn.id} pokemon={pkmn} />
+                ))
+              }
+            </div>
+            :
+            <div className="flex justify-center items-center">
+              <p className="text-4xl font-semibold mb-2">No Pokémon found</p>
+            </div>
+        }
 
         <Pagination
           className={'flex justify-center my-8'}
           currentPage={currentPage}
-          totalCount={lastPkm}
+          totalCount={totalPkmn}
           pageSize={16}
           onPageChange={page => setQueryParams(page)}
         />
@@ -57,7 +64,7 @@ const IndexPage: NextPage = ({pokemonList}: Pokemon[]) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
-  const { page } = context.query;
+  const { page, sort, q } = context.query;
 
   const show = 16;
   const init = (Number(page ?? 1) - 1) * show;
@@ -65,9 +72,21 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   try {
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${lastPkm}`);
-    const {results} = await res.json();
+    let {results} = await res.json();
 
-    // .sort((a, b) => a.name.localeCompare(b.name))
+    if (sort === 'nameDesc') {
+      results.sort((a, b) => b.name.localeCompare(a.name));
+    }
+
+    if (sort === 'numDesc') {
+      results.sort((a, b) => b.url.split('/')[6] - a.url.split('/')[6]);
+    }
+
+    // filter results by query params
+    if (q) {
+      results = results.filter(pkmn => pkmn.name.includes(q));
+    }
+
     const paginatePokeData = results.slice(init, end);
 
     const pokemonList: Pokemon[] = await Promise.all(
@@ -88,7 +107,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     );
 
     // Pass data to the page via props
-    return { props: { pokemonList } };
+    const totalPkmn = results.length;
+
+    return { props: { pokemonList, totalPkmn } };
 
   } catch (err) {
     return {notFound: true};

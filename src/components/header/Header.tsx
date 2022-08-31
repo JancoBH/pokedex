@@ -1,12 +1,12 @@
 import {Disclosure} from '@headlessui/react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
-import {Pokeball, Type} from '../icons';
+import {Pokeball} from '../icons';
 import Image from 'next/image';
 import {useScroll} from '../../hooks';
 import {useState} from 'react';
-import {Modal} from '../dialog/Modal';
-import Button from '../buttons/Button';
+import {SearchModal} from '../dialogs/SearchModal';
+import {SortModal} from '../dialogs/SortModal';
 
 const navigation = [
   { name: 'Trainers', href: '/trainers' },
@@ -18,33 +18,13 @@ function classNames(...classes) {
 
 const iconCss = 'hover:opacity-60 cursor-pointer transition-all duration-200 ease-in-out';
 
-const types = ['normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug', 'ghost', 'steel', 'fire', 'water', 'grass', 'electric', 'psychic', 'ice', 'dragon', 'dark', 'fairy'];
-
 export const Header = () => {
 
   const isScrolled = useScroll(5);
   const { asPath, route } = useRouter();
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [hoverType, setHoverType] = useState('');
-  const [selectedTypes, setSelectedTypes] = useState([]);
-
-  const handleSelectedType = (type) => {
-    // toggle type
-    if (selectedTypes.includes(type)) {
-      setSelectedTypes(selectedTypes.filter(t => t !== type));
-    } else {
-      setSelectedTypes([...selectedTypes, type]);
-    }
-  };
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const [isSortModalOpen, setIsSortModalOpen] = useState(false);
 
   return (
     <>
@@ -94,10 +74,10 @@ export const Header = () => {
                 <div className="flex items-center gap-2 sm:static sm:inset-auto sm:pr-0">
 
                   {
-                    route !== '/trainers' && <Image src={'/icon_sort.svg'} alt={'Sort'} title={'Sort'} width={40} height={30} className={iconCss} />
+                    route !== '/trainers' && <Image src={'/icon_sort.svg'} alt={'Sort'} title={'Sort'} width={40} height={30} className={iconCss} onClick={() => setIsSortModalOpen(true)} />
                   }
 
-                  <Image src={'/icon_search.svg'} alt={'Search'} title={'Search'} width={35} height={36} className={iconCss} onClick={openModal} />
+                  <Image src={'/icon_search.svg'} alt={'Search'} title={'Search'} width={35} height={36} className={iconCss} onClick={() => setIsSearchModalOpen(true)} />
 
                   <div className="flex items-center md:hidden">
                     {/* Mobile menu button */}
@@ -142,49 +122,8 @@ export const Header = () => {
 
       </Disclosure>
 
-      <Modal isOpen={isOpen} title={'Search by condition'} closeModal={() => closeModal()}>
-
-        <div className="p-5 max-h-96 overflow-auto">
-          <section className="mb-4">
-            <h3 className="text-xl font-semibold mb-2">Name</h3>
-
-            <input type="text"
-              className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-primary-dark focus:outline-none " placeholder="Ex: Pikachu"/>
-          </section>
-
-          <section className="mb-4">
-            <h3 className="text-xl text-black font-semibold mb-2">Type</h3>
-
-            <div className="grid grid-cols-3 lg:grid-cols-6 gap-2 text-center">
-              {
-                types.map(type => (
-                  <div key={type} id={type}
-                    className={`flex flex-col select-none cursor-pointer ${ selectedTypes.length <= 1 ? '' : !selectedTypes.includes(type) ? 'pointer-events-none opacity-30' : ''}`}
-                    onMouseOver={() => setHoverType(type)}
-                    onMouseLeave={() => setHoverType('')}
-                    onClick={() => handleSelectedType(type)}>
-                    <Type type={type} mode={selectedTypes.includes(type) ? 'on' : type === hoverType ? 'on' : 'off'} width={80} height={80}/>
-                    <small className="capitalize">{type} {selectedTypes.includes(type) && '✅'}</small>
-                  </div>
-                ))
-              }
-            </div>
-          </section>
-
-          <section>
-            <h3 className="text-xl text-black font-semibold mb-2">Region</h3>
-            <small>(soon)</small>
-          </section>
-        </div>
-
-        <div className="flex justify-end p-5 bg-gray-100 dark:bg-dark-theme max-w-">
-          <Button className="flex items-center gap-2 px-5 py-3">
-            <Image src={'/icon_search_w.svg'} alt={'Search'} title={'Search'} width={20} height={21} />
-            Search
-          </Button>
-        </div>
-
-      </Modal>
+      <SearchModal isOpen={isSearchModalOpen} onDialogClose={() => setIsSearchModalOpen(false)}/>
+      <SortModal isOpen={isSortModalOpen} onDialogClose={() => setIsSortModalOpen(false)}/>
 
     </>
   );
