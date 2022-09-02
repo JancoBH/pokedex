@@ -5,19 +5,18 @@ import {AppState} from '../../app/store';
 
 export interface TrainerState {
   trainers: Trainer[];
-  status: 'idle' | 'loading' | 'failed'
+  status: 'succeeded' | 'loading' | 'failed'
 }
 
 const initialState: TrainerState = {
   trainers: [],
-  status: 'idle',
+  status: 'loading',
 };
 
 export const getTrainersAsync = createAsyncThunk(
-  'counter/fetchCount',
+  'trainer/fetchTrainers',
   async (_: void) => {
-    const response = await fetchTrainers();
-    return response.data;
+    return await fetchTrainers();
   }
 );
 
@@ -31,7 +30,7 @@ export const trainerSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(getTrainersAsync.fulfilled, (state, {payload}) => {
-        state.status = 'idle';
+        state.status = 'succeeded';
         state.trainers = payload;
       })
       .addCase(getTrainersAsync.rejected, (state) => {

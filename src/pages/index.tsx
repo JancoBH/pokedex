@@ -1,6 +1,6 @@
 import type {GetServerSideProps, NextPage} from 'next';
 import Head from 'next/head';
-import {PokemonCard, Pagination} from '../components';
+import {PokemonCard, Pagination, Chip} from '../components';
 import {useCallback, useEffect, useState} from 'react';
 import { useRouter } from 'next/router';
 import {Pokemon} from '../models';
@@ -9,7 +9,7 @@ const lastPkm = 898;
 
 const IndexPage: NextPage = ({pokemonList, totalPkmn}: {pokemonList: Pokemon[], totalPkmn: number}) => {
 
-  const { asPath, pathname, ...router } = useRouter();
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const setQueryParams = useCallback((page) => {
@@ -23,6 +23,11 @@ const IndexPage: NextPage = ({pokemonList, totalPkmn}: {pokemonList: Pokemon[], 
     setCurrentPage(Number(router.query.page ?? 1));
   }, [router.query]);
 
+  const handleChipClose = () => {
+    delete router.query.q;
+    router.replace( { pathname: '/', query: {...router.query} } );
+  };
+
   return (
     <>
       <Head>
@@ -32,7 +37,13 @@ const IndexPage: NextPage = ({pokemonList, totalPkmn}: {pokemonList: Pokemon[], 
 
       {/* Pokédex Section */}
       <section className="principal-container pt-24 lg:pt-24 min-h-[85vh]">
-        <h2 className="text-2xl lg:text-3xl font-medium mb-8 text-center lg:text-left">Pokédex List</h2>
+        <div className="flex items-center mb-8 gap-4">
+          <h2 className="text-2xl lg:text-3xl font-medium text-center lg:text-left">Pokédex List</h2>
+
+          {
+            router.query.q && <Chip text={`Search name results "${router.query.q}"`} onCloseChip={() => handleChipClose()}/>
+          }
+        </div>
 
         {
           pokemonList.length > 0
@@ -45,8 +56,8 @@ const IndexPage: NextPage = ({pokemonList, totalPkmn}: {pokemonList: Pokemon[], 
               }
             </div>
             :
-            <div className="flex justify-center items-center">
-              <p className="text-4xl font-semibold mb-2">No Pokémon found</p>
+            <div className="flex justify-center items-center h-96">
+              <p className="text-4xl font-semibold mb-2">Pokémon not found</p>
             </div>
         }
 
